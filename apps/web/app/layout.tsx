@@ -1,0 +1,1 @@
+import "./globals.css";export const metadata={title:"PeopleCore | Workforce",description:"PeopleCore HRMS demo"};export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="en"><body>{children}</body></html>}

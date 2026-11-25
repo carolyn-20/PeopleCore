@@ -1,0 +1,11 @@
+# Deployment checklist (not deployed by this package)
+- Set secrets via host secret manager, not .env in source control.
+- Use HTTPS/reverse proxy and strict origin allowlist.
+- Put PostgreSQL in private network; restrict API access.
+- Set up encrypted backups and verify restores on a schedule.
+- Configure log aggregation, alerting, health checks and retention.
+- Run migrations with a controlled job, not app startup.
+- Replace demo accounts and password policy; implement refresh/revocation/session controls.
+- Validate manager/employee resource authorization and audit sensitive reads.
+- Add storage provider, email/calendar integrations only after sandbox credentials and webhook verification.
+- Run dependency, container and SAST scans; review payroll rules with domain professionals.

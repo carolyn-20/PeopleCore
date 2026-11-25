@@ -1,0 +1,1 @@
+-- Initial migration. Apply database/schema.sql for a fresh environment.

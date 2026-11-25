@@ -1,0 +1,3 @@
+# Configure actual reviewers after repository creation.
+/apps/api/src/routes/payroll.js @payroll-reviewers
+/database/ @database-reviewers

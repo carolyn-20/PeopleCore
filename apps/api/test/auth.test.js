@@ -1,0 +1,1 @@
+const request=require('supertest');const app=require('../src/server');describe('API health',()=>{it('returns healthy',async()=>{const r=await request(app).get('/health');expect(r.status).toBe(200);expect(r.body.status).toBe('ok');});it('protects API endpoints',async()=>{const r=await request(app).get('/api/employees');expect(r.status).toBe(401);});});
