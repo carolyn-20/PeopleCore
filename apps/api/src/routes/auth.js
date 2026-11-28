@@ -14,10 +14,10 @@ router.post('/register',async(req,res)=>{
   const created=await transaction(async c=>{
    const code='USR-'+Date.now().toString(36).toUpperCase();
    const employee=(await c.query('INSERT INTO employees(employee_code,first_name,last_name,email,title,role,status,hire_date,location) VALUES($1,$2,$3,$4,$5,$6,$7,CURRENT_DATE,$8) RETURNING id,first_name,last_name,email,role',[code,first,email,last,'Workspace Member','admin','active','Remote'])).rows[0];
-   const user=(await c.query('INSERT INTO users(employee_id,email,password_hash,role) VALUES($1,$2,$3,$4) RETURNING id,email,role,employee_id',[employee.id,email,password_hash,'admin'])).rows[0];
+   const count=(await c.query('SELECT count(*)::int n FROM users')).rows[0].n;const assignedRole=count===0?'admin':'employee';const user=(await c.query('INSERT INTO users(employee_id,email,password_hash,role) VALUES($1,$2,$3,$4) RETURNING id,email,role,employee_id',[employee.id,email,password_hash,assignedRole])).rows[0];employee.role=assignedRole;
    return {employee,user};
   });
-  const payload={userId:created.user.id,employeeId:created.employee.id,role:'admin',email:created.user.email,name:[created.employee.first_name,created.employee.last_name].join(' ')};
+  const payload={userId:created.user.id,employeeId:created.employee.id,role:created.user.role,email:created.user.email,name:[created.employee.first_name,created.employee.last_name].join(' ')};
   res.status(201).json({token:jwt.sign(payload,secret,{expiresIn:'8h'}),user:payload});
  }catch(e){if(e.code==='23505')return res.status(409).json({error:'An account with this email already exists. Please sign in.'});console.error('register error',e.message);res.status(500).json({error:'Account creation failed. Please retry.'});}
 });
