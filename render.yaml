@@ -1,9 +1,3 @@
-databases:
-  - name: peoplecore-db
-    databaseName: peoplecore
-    user: peoplecore
-    plan: free
-    region: singapore
 services:
   - type: web
     name: peoplecore-api
@@ -15,30 +9,28 @@ services:
     healthCheckPath: /health
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: peoplecore-db
-          property: connectionString
+        sync: false
       - key: JWT_SECRET
         generateValue: true
       - key: PAYROLL_URL
-        value: https://peoplecore-payroll-trn3.onrender.com
+        value: https://peoplecore-payroll-6bps.onrender.com
   - type: web
     name: peoplecore-payroll
     runtime: docker
     plan: free
     region: singapore
-    dockerfilePath: ./Dockerfile
-    dockerContext: ./services/payroll
+    dockerfilePath: ./services/payroll/Dockerfile
+    dockerContext: .
     healthCheckPath: /health
   - type: web
     name: peoplecore-web
     runtime: docker
     plan: free
     region: singapore
-    dockerfilePath: ./Dockerfile
-    dockerContext: ./apps/web
+    dockerfilePath: ./apps/web/Dockerfile
+    dockerContext: .
     envVars:
       - key: NEXT_PUBLIC_API_URL
-        value: https://peoplecore-api-trn3.onrender.com
+        value: https://peoplecore-api-6bps.onrender.com
       - key: NEXT_PUBLIC_PAYROLL_URL
-        value: https://peoplecore-payroll-trn3.onrender.com
+        value: https://peoplecore-payroll-6bps.onrender.com
